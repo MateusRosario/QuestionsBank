@@ -2,11 +2,11 @@
 
 [english version](README.md)
 
-Projeto da disciplina de Progamação Orientada a Objetos (POO), 
+Projeto da disciplina de Programação Orientada a Objetos (POO), 
 feito no segundo semestre da graduação em Ciência da Computação
 da Universidade Federal do Tocantins. Projeto feito com o 
 intuito de aprender sobre POO, programação de Interfaces em 
-Java, persistencia de dados,  gerencia de projetos e trabalho
+Java, persistência de dados, gerência de projetos e trabalho
 em equipe.
 
 O programa Desktop tem o objetivo de manter um banco de questões
