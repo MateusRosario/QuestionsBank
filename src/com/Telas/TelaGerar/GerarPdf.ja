@@ -1,0 +1,112 @@
+package com.Telas.TelaGerar;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ListaQuestoes.Questao.Aberta;
+import com.ListaQuestoes.Questao.Objetiva;
+import com.ListaQuestoes.Questao.Questao;
+import com.ListaQuestoes.Questao.VouF;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
+public class GerarPdf {
+
+     Document Prova;
+
+     List<Questao> questoes = new ArrayList<Questao>();
+     private String professor;
+     private String instituicao;
+     private String Cabecalho;
+     private String CampoRespostaAberta = new String("   ______________________________________________________________________\n");
+
+
+
+    public GerarPdf(String NomeProfessor, String NomeInstituicao, List<Questao> questoes){
+
+        this.questoes=questoes;
+
+        professor = new String(NomeProfessor);
+        instituicao = new String(NomeInstituicao);
+        Cabecalho = new String("                                                                        Avaliação\n\n\nProfessor: "+professor+"\nInstituição de ensino: "+instituicao+"\nAluno:____________________________________________" +
+                " Matricula :________________"+"\nData:___/___/_______\n\n\n");
+
+        AbrirArquivo();
+        //RespostasArquivo();
+
+    }
+
+    public void AbrirArquivo(){
+
+        Prova = new Document();
+
+
+        try {
+            PdfWriter.getInstance(Prova,new FileOutputStream("Prova.pdf"));
+            Prova.open();
+            Prova.add(new Paragraph(Cabecalho));
+
+            for (int i=0; i<questoes.size();i++){
+
+                switch (questoes.get(i).getTipo().charAt(0)){
+                    case 'A':
+
+                        Prova.add(new Paragraph(i+1+""+") - "+questoes.get(i).getPergunta()+"\n"));
+                        Prova.add(new Paragraph(CampoRespostaAberta));
+                        Prova.add(new Paragraph(CampoRespostaAberta));
+                        Prova.add(new Paragraph("\n"));
+
+                        break;
+                    case 'V':
+
+                        Prova.add(new Paragraph(i+1+""+") - "+questoes.get(i).getPergunta()+"\n"));
+                        Prova.add(new Paragraph("   (v) - Verdadeiro;"));
+                        Prova.add(new Paragraph("   (f) - Falso;"));
+                        Prova.add(new Paragraph("\n"));
+
+                        break;
+                    case 'O':
+
+                        Prova.add(new Paragraph(i+1+""+") - "+questoes.get(i).getPergunta()+"\n"));
+                        String []alternativas;
+                        String []letras = {"A","B","C","D","E","F"};
+                        alternativas=((Objetiva) questoes.get(i)).getAlternativas();
+                       for (int j=0;j<alternativas.length;j++) {
+
+
+                              Prova.add(new Paragraph("     ("+letras[j]+") - "+alternativas[j]));
+
+                       }
+                       Prova.add(new Paragraph("\n"));
+                        break;
+                }
+
+            }
+
+
+
+
+        }
+        catch (FileNotFoundException e) {
+
+            System.err.println(1);
+
+        }
+        catch (DocumentException de) {
+
+            System.err.println(2);
+
+        }
+
+        Prova.close();
+    }
+
+
+
+
+}

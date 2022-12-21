@@ -1,0 +1,4 @@
+Voce precisa adicionar o arquivo disponivel para download, como biblioteca do seu projeto, isso varia de IDE para IDE.
+
+Para fazer isso no Intelijj:
+  -file -> project structure -> (Project setting) Libraries -> New Project library -> Java -> Agora voce seleciona o arquivo .jar (itext) e aplica ao projeto

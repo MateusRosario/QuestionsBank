@@ -1,0 +1,79 @@
+package com.Telas.TelaGerar;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ListaQuestoes.Questao.Aberta;
+import com.ListaQuestoes.Questao.Objetiva;
+import com.ListaQuestoes.Questao.Questao;
+import com.ListaQuestoes.Questao.VouF;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
+
+
+
+public class GabaritoPDF {
+
+
+    Document Respostas;
+    List<Questao> questoes = new ArrayList<Questao>();
+    private String professor;
+    private String Cabecalho;
+
+
+    public GabaritoPDF(String NomeProfessor, List<Questao> questoes){
+
+        this.questoes=questoes;
+
+        professor = new String(NomeProfessor);
+
+
+        RespostasArquivo();
+
+    }
+
+    public void RespostasArquivo(){
+
+        Respostas = new Document();
+
+        try {
+
+            PdfWriter.getInstance(Respostas, new FileOutputStream("Gabarito.pdf"));
+            Respostas.open();
+            Respostas.add(new Paragraph("                                                                        Gabarito\n\nProfessor: "+professor+"\n\n\n"));
+
+            for (int i=0; i<questoes.size();i++){
+
+                switch (questoes.get(i).getTipo().charAt(0)){
+                    case 'A':
+                        Respostas.add(new Paragraph(i+1+""+") - "+((Aberta)questoes.get(i)).getResposta()+"\n\n"));
+                        break;
+                    case 'V':
+                        if (((VouF)questoes.get(i)).getResposta()) {
+                            Respostas.add(new Paragraph(i+1+""+") - "+"Verdadeiro."+"\n\n"));
+                        }else{
+                            Respostas.add(new Paragraph(i+1+""+") - "+"Falso."+"\n\n"));
+                        }
+                        break;
+                    case 'O':
+                        Respostas.add(new Paragraph(i+1+""+") - "+((Objetiva)questoes.get(i)).getCorretas()+"\n\n"));
+                        break;
+                }
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.err.println(3);
+        }
+        catch (DocumentException de) {
+            System.err.println(4);
+        }
+
+        Respostas.close();
+    }
+    }
